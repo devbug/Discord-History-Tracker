@@ -63,6 +63,8 @@ class WEBPACK {
 			let foundModule = null;
 			if (exports.Z && moduleFilter(exports.Z)) {
 				foundModule = defaultExport ? exports.Z : exports;
+				// console.log(Object.getPrototypeOf(foundModule).constructor.displayName);
+				// console.log(Object.getOwnPropertyNames(Object.getPrototypeOf(foundModule)));
 			}
 			if (exports.ZP && moduleFilter(exports.ZP)) {
 				foundModule = defaultExport ? exports.ZP : exports;
