@@ -26,7 +26,7 @@ makezip() {
 
 rm -rf "./bin"
 
-dedicated_runtimes=(win-x64 linux-x64)
+dedicated_runtimes=(win-x64 linux-x64 osx-arm64 osx-x64)
 skipped_portable_runtimes=(browser-wasm linux-mips64 linux-s390x linux-ppc64le)
 
 # Dedicated Runtimes
@@ -35,6 +35,13 @@ for cfg in "${dedicated_runtimes[@]}"; do
   dotnet publish Desktop -c Release -r "$cfg" -o "./bin/$cfg" --self-contained true
   makezip "$cfg"
 done
+
+if [ ! -z "$(which lipo)" ]; then
+  mv ./bin/osx-arm64 ./bin/macos
+  lipo ./bin/macos/DiscordHistoryTracker ./bin/osx-x64/DiscordHistoryTracker -create -output ./bin/macos/DiscordHistoryTracker
+  rm -rf ./bin/osx-x64 ./bin/osx-arm64.zip ./bin/osx-x64.zip
+  makezip "macos"
+fi
 
 # Portable
 
